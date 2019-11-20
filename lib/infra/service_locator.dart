@@ -6,6 +6,7 @@ import 'package:beyond/service/location_service.dart';
 import 'package:beyond/service/service_common.dart';
 import 'package:beyond/service/shared_preferences_service.dart';
 import 'package:beyond/ui/navigation_manager.dart';
+import 'package:flutter/foundation.dart';
 
 class ServiceLocator implements Startable {
   /// Services
@@ -27,7 +28,13 @@ class ServiceLocator implements Startable {
   ServiceLocator() {
     configService = ConfigService();
     apiService = ApiService(configService);
-    sharedPreferencesService = SharedPreferencesService();
+
+    if (kIsWeb) {
+      sharedPreferencesService = WebSharedPreferencesService();
+    } else {
+      sharedPreferencesService = MobileSharedPreferencesService();
+    }
+
     locationService = LocationService();
     authManager = AuthManager(apiService, sharedPreferencesService);
     viewModelFactory = ViewModelFactory(this);

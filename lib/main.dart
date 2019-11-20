@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:beyond/infra/service_locator.dart';
 
-void main() => runApp(MyApp(ServiceLocator()));
+void main() {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    print('main.onError: details: ${details.toString()}');
+  };
+  runApp(MyApp(ServiceLocator()));
+}
 
 class MyApp extends StatefulWidget {
   final ServiceLocator _serviceLocator;
@@ -28,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Mvvm Plus',
+      title: 'Beyond',
       navigatorKey: _serviceLocator.navigationManager.navigatorKey,
       theme: ThemeData(
           primarySwatch: Colors.blue,
